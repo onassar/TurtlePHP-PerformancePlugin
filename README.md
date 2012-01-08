@@ -20,5 +20,12 @@ that was reached/used during the lifetime of the request.
 ```
 
 ### Sample Response Headers
-    Duration: 0.0044
-    Memory: 768
+The following headers will be sent along with the response by the framework:
+
+```
+Duration: 0.0044
+Memory: 768
+```
+
+They can easily be viewed by the document through your browser&#039;s
+debug/inspector tool.
