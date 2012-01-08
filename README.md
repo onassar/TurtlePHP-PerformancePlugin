@@ -8,7 +8,7 @@ Memory usage is returned in kilobytes, and represents the peak, **real** memory
 that was reached/used during the lifetime of the request.
 
 ### Sample Initialization
-```php
+``` php
 <?php
 
     /**
