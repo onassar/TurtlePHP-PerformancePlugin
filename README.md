@@ -16,6 +16,7 @@ that was reached/used during the lifetime of the request.
      */
     require_once APP . '/plugins/Performance.class.php';
     \Plugin\Performance::init();
+
 ```
 
 ### Sample Response Headers
