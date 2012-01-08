@@ -27,10 +27,8 @@ Duration: 0.0044
 Memory: 768
 ```
 
-```
     Duration: 0.0044
     Memory: 768
-```
 
 They can easily be viewed by the document through your browser&#039;s
 debug/inspector tool.
