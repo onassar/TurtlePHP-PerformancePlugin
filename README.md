@@ -8,13 +8,15 @@ Memory usage is returned in kilobytes, and represents the peak, **real** memory
 that was reached/used during the lifetime of the request.
 
 ### Sample Initialization
+```php
+<?php
     /**
      * Performance
      */
     require_once APP . '/plugins/Performance.class.php';
     \Plugin\Performance::init();
+```
 
 ### Sample Response Headers
     Duration: 0.0044
     Memory: 768
-
