@@ -10,6 +10,7 @@ that was reached/used during the lifetime of the request.
 ### Sample Initialization
 ```php
 <?php
+
     /**
      * Performance
      */
