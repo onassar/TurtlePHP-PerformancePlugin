@@ -1,6 +1,6 @@
 TurtlePHP Performance Plugin
 ===
-TurtlePHP Performance Plugin which analyzes a response that is ready for
+[TurtlePHP](https://github.com/onassar/TurtlePHP) Performance Plugin which analyzes a response that is ready for
 flushing, determines it&#039;s processing duration and memory usage, and returns
 them through custom response-headers.
 
