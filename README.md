@@ -14,7 +14,7 @@ that was reached/used during the lifetime of the request.
     /**
      * Performance
      */
-    require_once APP . '/plugins/Performance.class.php';
+    require_once APP . '/plugins/TurtlePHP-PerformancePlugin/Performance.class.php';
     \Plugin\Performance::init();
 
 ```
