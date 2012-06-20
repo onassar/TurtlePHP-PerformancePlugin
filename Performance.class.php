@@ -41,7 +41,7 @@
 
                     // duration difference
                     $benchmark = round(microtime(true) - START, 4);
-                    header('Duration: ' . ($benchmark));
+                    header('TurtlePHP-Duration: ' . ($benchmark));
 
                     // leave buffer unmodified
                     return $buffer;
@@ -58,7 +58,7 @@
                     // peak memory usage determination
                     $memory = (memory_get_peak_usage(true));
                     $memory = round($memory / 1024);
-                    header('Memory: ' . ($memory));
+                    header('TurtlePHP-Memory: ' . ($memory));
     
                     // leave buffer unmodified
                     return $buffer;
