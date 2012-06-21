@@ -23,8 +23,8 @@ that was reached/used during the lifetime of the request.
 The following headers will be sent along with the response by the framework:
 
 ```
-Duration: 0.0044
-Memory: 768
+TurtlePHP-Duration: 0.0044
+TurtlePHP-Memory: 768
 ```
 
 They can easily be viewed by the document through your browser&#039;s
