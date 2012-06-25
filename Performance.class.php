@@ -10,34 +10,83 @@
      * flushing, determines it's processing duration and memory usage, and
      * returns them through custom response-headers.
      * 
-     * @author   Oliver Nassar <onassar@gmail.com>
-     * @abstract
-     * @notes    with PHP 5.4.x, $_SERVER['REQUEST_TIME'] can be used rather
-     *           than the <START> constant, as it'll be set as a float including
-     *           microtime
+     * @author Oliver Nassar <onassar@gmail.com>
+     * @notes  with PHP 5.4.x, $_SERVER['REQUEST_TIME'] can be used rather than
+     *         the <START> constant, as it'll be set as a float including
+     *         microtime
      */
-    abstract class Performance
+    class Performance
     {
         /**
-         * init
+         * _attach
+         * 
+         * @var    Boolean
+         * @access protected
+         */
+        protected $_attach = true;
+
+        /**
+         * _key
+         * 
+         * @var    String
+         * @access protected
+         */
+        protected $_key = 'TurtlePHP-';
+
+        /**
+         * _metrics
+         * 
+         * @var    Array
+         * @access protected
+         */
+        protected $_metrics = array(
+            'duration' => array(
+                'start' => 0,
+                'end' => 0,
+                'benchmark' => 0
+            ),
+            'memory' => 0
+        );
+
+        /**
+         * _request
+         * 
+         * @var    Request
+         * @access protected
+         */
+        protected $_request;
+
+        /**
+         * __construct
          * 
          * Initializes the performance plugin by registering analytical callback
          * methods on the request buffer.
          * 
-         * @notes  The request callbacks registered here subsequently register
-         *         another request callback to ensure that they are the last
-         *         ones run. This does not cause an issue, as the callbacks are
-         *         retrieved and run by reference, rather than through returned
-         *         Closure objects.
+         * @notes  The request callbacks registered here subsequently
+         *         sub-register another request callback to ensure that they are
+         *         the last ones run. This does not cause an issue, as the
+         *         callbacks are retrieved and run by reference, rather than
+         *         through returned Closure objects.
          * @access public
-         * @static
+         * @param  Request $request
          * @return void
          */
-        public static function init()
+        public function __construct(\Turtle\Request $request)
         {
+            // set request
+            $this->_request = $request;
+            $self = $this;
+
             // response duration callback
-            \Turtle\Request::addCallback(function($buffer) {
-                \Turtle\Request::addCallback(function($buffer) {
+            $request->addCallback(function($buffer) use ($request) {
+                $request->addCallback(function($buffer) {
+error_log('s');
+                    return $buffer;
+                });
+                return $buffer;
+            });
+            /*
+function($buffer) {
 
                     // duration difference
                     $benchmark = round(microtime(true) - START, 4);
@@ -50,10 +99,11 @@
                 // leave buffer unmodified
                 return $buffer;
             });
-
+*/
+return;
             // request memory callback
-            \Turtle\Request::addCallback(function($buffer) {
-                \Turtle\Request::addCallback(function($buffer) {
+            $request->addCallback(function($buffer) use ($request) {
+                $request->addCallback(function($buffer) {
 
                     // peak memory usage determination
                     $memory = (memory_get_peak_usage(true));
@@ -67,6 +117,105 @@
                 // leave buffer unmodified
                 return $buffer;
             });
+        }
+
+        /**
+         * duration
+         * 
+         * Shouldn't be used publically, but must be set as public for 
+         * 
+         * @access public
+         * @return void
+         */
+        public function duration()
+        {
+error_log('duration');
+return;
+            // calculations
+            $end = microtime(true);
+            $benchmark = round($end - START);
+            $this->_metrics['end'] = $end;
+            $this->_metrics['benchmark'] = $benchmark;
+            
+            // if ought to be attached
+            if ($this->_attach) {
+
+                // set header (with key)
+                header(($this->_key) . '-Duration: ' . ($benchmark));
+            }
+        }
+
+        /**
+         * memory
+         * 
+         * 
+         * 
+         * @access public
+         * @return void
+         */
+        public function memory()
+        {
+echo 'memory';
+        }
+
+        /**
+         * attach
+         * 
+         * 
+         * 
+         * @access public
+         * @return void
+         */
+        public function attach()
+        {
+            $this->_attach = true;
+        }
+
+        /**
+         * detach
+         * 
+         * @access public
+         * @return void
+         */
+        public function detach()
+        {
+            $this->_attach = false;
+        }
+
+        /**
+         * getMetrics
+         * 
+         * @access public
+         * @return Array
+         */
+        public function getMetrics()
+        {
+            return $this->_metrics;
+        }
+
+        /**
+         * getRequest
+         * 
+         * 
+         * 
+         * @access public
+         * @return void
+         */
+        public function getRequest()
+        {
+            return $this->_request;
+        }
+
+        /**
+         * setKey
+         * 
+         * @access public
+         * @param  String $key
+         * @return void
+         */
+        public function setKey($key)
+        {
+            $this->_key = $key;
         }
     }
 
