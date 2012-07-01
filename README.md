@@ -16,7 +16,7 @@ that was reached/used during the lifetime of the request.
      */
     require_once APP . '/plugins/TurtlePHP-PerformancePlugin/Performance.class.php';
     $request = \Turtle\Application::getRequest();
-    $performance = (new \Plugin\Performance($request));
+    (new \Plugin\Performance($request));
 
 ```
 

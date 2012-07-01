@@ -11,12 +11,11 @@
      * returns them through custom response-headers.
      * 
      * @author Oliver Nassar <onassar@gmail.com>
-     * @final
      * @notes  with PHP 5.4.x, $_SERVER['REQUEST_TIME'] can be used rather than
      *         the <START> constant, as it'll be set as a float including
      *         microtime
      */
-    final class Performance
+    class Performance
     {
         /**
          * __construct
@@ -30,17 +29,29 @@
          *         retrieved and run by reference, rather than through returned
          *         Closure objects.
          * @access public
+         * @param  Request $request
          * @return void
          */
-        public function __construct($request)
+        public function __construct(\Turtle\Request $request)
         {
+            // instance reference
+            $self = $this;
+
             // response duration callback
-            $request->addCallback(function($buffer) use ($request) {
-                $request->addCallback(function($buffer) {
+            $request->addCallback(function($buffer) use ($request, $self) {
+
+                // request-path header
+                $self->setPathHeader($request);
+
+                // sub-callback
+                $request->addCallback(function($buffer) use($self) {
 
                     // duration difference
                     $benchmark = round(microtime(true) - START, 4);
-                    header('TurtlePHP-Duration: ' . ($benchmark));
+                    header(
+                        'TurtlePHP-' . ($self->__hash) . '-Duration: ' .
+                        ($benchmark)
+                    );
 
                     // leave buffer unmodified
                     return $buffer;
@@ -51,13 +62,17 @@
             });
 
             // request memory callback
-            $request->addCallback(function($buffer) use ($request) {
-                $request->addCallback(function($buffer) {
+            $request->addCallback(function($buffer) use ($request, $self) {
+
+                // sub-callback
+                $request->addCallback(function($buffer) use($self) {
 
                     // peak memory usage determination
                     $memory = (memory_get_peak_usage(true));
                     $memory = round($memory / 1024);
-                    header('TurtlePHP-Memory: ' . ($memory));
+                    header(
+                        'TurtlePHP-'. ($self->__hash) . '-Memory: ' . ($memory)
+                    );
     
                     // leave buffer unmodified
                     return $buffer;
@@ -66,6 +81,30 @@
                 // leave buffer unmodified
                 return $buffer;
             });
+        }
+
+        /**
+         * setPathHeader
+         * 
+         * @access public
+         * @param  Request $request
+         * @return void
+         */
+        public function setPathHeader(\Turtle\Request $request)
+        {
+            // set path (for header passing)
+            $route = $request->getRoute();
+            $path = $route['path'];
+
+            // grab md5 and truncate it
+            $md5 = md5($path);
+            $md5 = substr($md5, 0, 6);
+
+            // set instance md5
+            $this->__hash = $md5;
+
+            // set path header
+            header('TurtlePHP-' . ($md5) . ': ' . ($path));
         }
     }
 
