@@ -18,6 +18,14 @@
     class Performance
     {
         /**
+         * _hash
+         * 
+         * @var    array
+         * @access protected
+         */
+        protected $_hash;
+
+        /**
          * __construct
          * 
          * Initializes the performance plugin by registering analytical callback
@@ -49,7 +57,7 @@
                     // duration difference
                     $benchmark = round(microtime(true) - START, 4);
                     header(
-                        'TurtlePHP-' . ($self->__hash) . '-Duration: ' .
+                        'TurtlePHP-' . ($self->getHash()) . '-Duration: ' .
                         ($benchmark)
                     );
 
@@ -71,7 +79,8 @@
                     $memory = (memory_get_peak_usage(true));
                     $memory = round($memory / 1024);
                     header(
-                        'TurtlePHP-'. ($self->__hash) . '-Memory: ' . ($memory)
+                        'TurtlePHP-'. ($self->getHash()) . '-Memory: ' .
+                        ($memory)
                     );
     
                     // leave buffer unmodified
@@ -81,6 +90,17 @@
                 // leave buffer unmodified
                 return $buffer;
             });
+        }
+
+        /**
+         * getHash
+         * 
+         * @access public
+         * @return String
+         */
+        public function getHash()
+        {
+            return $this->_hash;
         }
 
         /**
@@ -101,10 +121,9 @@
             $md5 = substr($md5, 0, 6);
 
             // set instance md5
-            $this->__hash = $md5;
+            $this->_hash = $md5;
 
             // set path header
             header('TurtlePHP-' . ($md5) . ': ' . ($path));
         }
     }
-
