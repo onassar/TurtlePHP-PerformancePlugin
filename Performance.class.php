@@ -82,7 +82,7 @@
                         'TurtlePHP-'. ($self->getHash()) . '-Memory: ' .
                         ($memory)
                     );
-    
+
                     // leave buffer unmodified
                     return $buffer;
                 });
