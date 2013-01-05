@@ -93,10 +93,40 @@
             $request->addCallback(function($buffer) use ($request, $self) {
                 if (class_exists('MySQLConnection')) {
                     $request->addCallback(function($buffer) use($self) {
+
+                        // select queries
                         $numberOfSelectQueries = \MySQLConnection::getNumberOfSelectQueries();
                         header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQLSelects: ' .
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfSelectQueries: ' .
                             ($numberOfSelectQueries)
+                        );
+
+                        // select queries
+                        $numberOfSelectQueries = \MySQLConnection::getNumberOfSelectQueries();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfSelectQueries: ' .
+                            ($numberOfSelectQueries)
+                        );
+
+                        // insert queries
+                        $numberOfInsertQueries = \MySQLConnection::getNumberOfInsertQueries();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfInsertQueries: ' .
+                            ($numberOfInsertQueries)
+                        );
+
+                        // update queries
+                        $numberOfUpdateQueries = \MySQLConnection::getNumberOfUpdateQueries();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfUpdateQueries: ' .
+                            ($numberOfUpdateQueries)
+                        );
+
+                        // cumulative query duration
+                        $cumulativeQueryDuration = \MySQLConnection::getCumulativeQueryDuration();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-CumulativeQueryDuration: ' .
+                            ($cumulativeQueryDuration)
                         );
                         return $buffer;
                     });
