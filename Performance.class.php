@@ -90,6 +90,24 @@
                 // leave buffer unmodified
                 return $buffer;
             });
+
+            /**
+             * MySQLConnection
+             * 
+             */
+            $request->addCallback(function($buffer) use ($request, $self) {
+                if (class_exists('MySQLConnection')) {
+                    $request->addCallback(function($buffer) use($self) {
+                        $numberOfSelectQueries = \MySQLConnection::getNumberOfSelectQueries();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQLSelects: ' .
+                            ($numberOfSelectQueries)
+                        );
+                        return $buffer;
+                    });
+                    return $buffer;
+                }
+            });
         }
 
         /**
