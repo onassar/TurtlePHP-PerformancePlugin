@@ -103,6 +103,22 @@
                     return $buffer;
                 }
             });
+
+            /**
+             * Number of requests
+             * 
+             */
+            $request->addCallback(function($buffer) use ($request, $self) {
+                $request->addCallback(function($buffer) use($self) {
+                    $numberOfRequests = count(\Turtle\Application::getRequests());
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-NumberOfRequests: ' .
+                        ($numberOfRequests)
+                    );
+                    return $buffer;
+                });
+                return $buffer;
+            });
         }
 
         /**
