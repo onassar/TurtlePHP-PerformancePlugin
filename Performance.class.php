@@ -69,25 +69,20 @@
                 return $buffer;
             });
 
-            // request memory callback
+            /**
+             * Memory
+             * 
+             */
             $request->addCallback(function($buffer) use ($request, $self) {
-
-                // sub-callback
                 $request->addCallback(function($buffer) use($self) {
-
-                    // peak memory usage determination
                     $memory = (memory_get_peak_usage(true));
                     $memory = round($memory / 1024);
                     header(
                         'TurtlePHP-'. ($self->getHash()) . '-Memory: ' .
                         ($memory)
                     );
-
-                    // leave buffer unmodified
                     return $buffer;
                 });
-
-                // leave buffer unmodified
                 return $buffer;
             });
 
