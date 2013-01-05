@@ -27,6 +27,7 @@ The following headers will be sent along with the response by the framework:
 TurtlePHP-00c6f7: ^/$
 TurtlePHP-00c6f7-Duration: 0.0044
 TurtlePHP-00c6f7-Memory: 768
+TurtlePHP-00c6f7-MySQLSelects: 18
 ```
 
 They can easily be viewed by the document through your browser&#039;s
