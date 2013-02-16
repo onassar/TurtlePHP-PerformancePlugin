@@ -76,7 +76,7 @@
             $request->addCallback(function($buffer) use ($request, $self) {
                 $request->addCallback(function($buffer) use($self) {
                     $memory = (memory_get_peak_usage(true));
-                    $memory = round($memory / 1024);
+                    $memory = number_format(round($memory / 1024)) . 'kb';
                     header(
                         'TurtlePHP-'. ($self->getHash()) . '-Memory: ' .
                         ($memory)
