@@ -101,13 +101,6 @@
                             ($numberOfSelectQueries)
                         );
 
-                        // select queries
-                        $numberOfSelectQueries = \MySQLConnection::getNumberOfSelectQueries();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfSelectQueries: ' .
-                            ($numberOfSelectQueries)
-                        );
-
                         // insert queries
                         $numberOfInsertQueries = \MySQLConnection::getNumberOfInsertQueries();
                         header(
