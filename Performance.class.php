@@ -52,12 +52,54 @@
             });
 
             // Callbacks
+            $this->_addAPCCacheCallback($request);
             $this->_addDurationCallback($request);
             $this->_addMemcachedCacheCallback($request);
             $this->_addMemoryCallback($request);
             $this->_addMySQLConnectionCallback($request);
             $this->_addRequestCacheCallback($request);
             $this->_addRequestsCallback($request);
+        }
+
+        /**
+         * _addAPCCacheCallback
+         * 
+         * @access protected
+         * @param  Request $request
+         * @return void
+         */
+        protected function _addAPCCacheCallback(\Turtle\Request $request)
+        {
+            $self = $this;
+            $request->addCallback(function($buffer) use ($request, $self) {
+                if (class_exists('APCCache')) {
+                    $request->addCallback(function($buffer) use($self) {
+
+                        // misses
+                        $numberOfMisses = \APCCache::getMisses();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfMisses: ' .
+                            ($numberOfMisses)
+                        );
+
+                        // reads
+                        $numberOfReads = \APCCache::getReads();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfReads: ' .
+                            ($numberOfReads)
+                        );
+
+                        // writes
+                        $numberOfWrites = \APCCache::getWrites();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfWrites: ' .
+                            ($numberOfWrites)
+                        );
+                        return $buffer;
+                    });
+                }
+                return $buffer;
+            });
         }
 
         /**
@@ -119,8 +161,8 @@
                         );
                         return $buffer;
                     });
-                    return $buffer;
                 }
+                return $buffer;
             });
         }
 
@@ -191,8 +233,8 @@
                         );
                         return $buffer;
                     });
-                    return $buffer;
                 }
+                return $buffer;
             });
         }
 
@@ -232,8 +274,8 @@
                         );
                         return $buffer;
                     });
-                    return $buffer;
                 }
+                return $buffer;
             });
         }
 
