@@ -45,34 +45,95 @@
             // instance reference
             $self = $this;
 
-            // response duration callback
+            // set header
             $request->addCallback(function($buffer) use ($request, $self) {
-
-                // request-path header
                 $self->setPathHeader($request);
+                return $buffer;
+            });
 
-                // sub-callback
+            // Callbacks
+            $this->_addDurationCallback($request);
+            $this->_addMemcachedCacheCallback($request);
+            $this->_addMemoryCallback($request);
+            $this->_addMySQLConnectionCallback($request);
+            $this->_addRequestCacheCallback($request);
+            $this->_addRequestsCallback($request);
+        }
+
+        /**
+         * _addDurationCallback
+         * 
+         * @access protected
+         * @param  Request $request
+         * @return void
+         */
+        protected function _addDurationCallback(\Turtle\Request $request)
+        {
+            $self = $this;
+            $request->addCallback(function($buffer) use ($request, $self) {
                 $request->addCallback(function($buffer) use($self) {
-
-                    // duration difference
                     $benchmark = round(microtime(true) - START, 4);
                     header(
                         'TurtlePHP-' . ($self->getHash()) . '-Duration: ' .
                         ($benchmark)
                     );
-
-                    // leave buffer unmodified
                     return $buffer;
                 });
-
-                // leave buffer unmodified
                 return $buffer;
             });
+        }
 
-            /**
-             * Memory
-             * 
-             */
+        /**
+         * _addMemcachedCacheCallback
+         * 
+         * @access protected
+         * @param  Request $request
+         * @return void
+         */
+        protected function _addMemcachedCacheCallback(\Turtle\Request $request)
+        {
+            $self = $this;
+            $request->addCallback(function($buffer) use ($request, $self) {
+                if (class_exists('MemcachedCache')) {
+                    $request->addCallback(function($buffer) use($self) {
+
+                        // misses
+                        $numberOfMisses = \MemcachedCache::getMisses();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfMisses: ' .
+                            ($numberOfMisses)
+                        );
+
+                        // reads
+                        $numberOfReads = \MemcachedCache::getReads();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfReads: ' .
+                            ($numberOfReads)
+                        );
+
+                        // writes
+                        $numberOfWrites = \MemcachedCache::getWrites();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfWrites: ' .
+                            ($numberOfWrites)
+                        );
+                        return $buffer;
+                    });
+                    return $buffer;
+                }
+            });
+        }
+
+        /**
+         * _addMemoryCallback
+         * 
+         * @access protected
+         * @param  Request $request
+         * @return void
+         */
+        protected function _addMemoryCallback(\Turtle\Request $request)
+        {
+            $self = $this;
             $request->addCallback(function($buffer) use ($request, $self) {
                 $request->addCallback(function($buffer) use($self) {
                     $memory = (memory_get_peak_usage(true));
@@ -85,11 +146,18 @@
                 });
                 return $buffer;
             });
+        }
 
-            /**
-             * MySQLConnection
-             * 
-             */
+        /**
+         * _addMySQLConnectionCallback
+         * 
+         * @access protected
+         * @param  Request $request
+         * @return void
+         */
+        protected function _addMySQLConnectionCallback(\Turtle\Request $request)
+        {
+            $self = $this;
             $request->addCallback(function($buffer) use ($request, $self) {
                 if (class_exists('MySQLConnection')) {
                     $request->addCallback(function($buffer) use($self) {
@@ -97,28 +165,28 @@
                         // select queries
                         $numberOfSelectQueries = \MySQLConnection::getNumberOfSelectQueries();
                         header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfSelectQueries: ' .
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfSelectQueries: ' .
                             ($numberOfSelectQueries)
                         );
 
                         // insert queries
                         $numberOfInsertQueries = \MySQLConnection::getNumberOfInsertQueries();
                         header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfInsertQueries: ' .
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfInsertQueries: ' .
                             ($numberOfInsertQueries)
                         );
 
                         // update queries
                         $numberOfUpdateQueries = \MySQLConnection::getNumberOfUpdateQueries();
                         header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-NumberOfUpdateQueries: ' .
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfUpdateQueries: ' .
                             ($numberOfUpdateQueries)
                         );
 
                         // cumulative query duration
                         $cumulativeQueryDuration = \MySQLConnection::getCumulativeQueryDuration();
                         header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQL-CumulativeQueryDuration: ' .
+                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-CumulativeQueryDuration: ' .
                             ($cumulativeQueryDuration)
                         );
                         return $buffer;
@@ -126,11 +194,59 @@
                     return $buffer;
                 }
             });
+        }
 
-            /**
-             * Number of requests
-             * 
-             */
+        /**
+         * _addRequestCacheCallback
+         * 
+         * @access protected
+         * @param  Request $request
+         * @return void
+         */
+        protected function _addRequestCacheCallback(\Turtle\Request $request)
+        {
+            $self = $this;
+            $request->addCallback(function($buffer) use ($request, $self) {
+                if (class_exists('RequestCache')) {
+                    $request->addCallback(function($buffer) use($self) {
+
+                        // misses
+                        $numberOfMisses = \RequestCache::getMisses();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfMisses: ' .
+                            ($numberOfMisses)
+                        );
+
+                        // reads
+                        $numberOfReads = \RequestCache::getReads();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfReads: ' .
+                            ($numberOfReads)
+                        );
+
+                        // writes
+                        $numberOfWrites = \RequestCache::getWrites();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfWrites: ' .
+                            ($numberOfWrites)
+                        );
+                        return $buffer;
+                    });
+                    return $buffer;
+                }
+            });
+        }
+
+        /**
+         * _addRequestsCallback
+         * 
+         * @access protected
+         * @param  Request $request
+         * @return void
+         */
+        protected function _addRequestsCallback(\Turtle\Request $request)
+        {
+            $self = $this;
             $request->addCallback(function($buffer) use ($request, $self) {
                 $request->addCallback(function($buffer) use($self) {
                     $numberOfRequests = count(\Turtle\Application::getRequests());
