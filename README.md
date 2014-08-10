@@ -7,6 +7,9 @@ duration and memory usage, and returns them through custom response-headers.
 Memory usage is returned in kilobytes, and represents the peak, **real** memory
 that was reached/used during the lifetime of the request.
 
+Class is instantiable rather than abstract to allow for multiple instances on
+subrequests.
+
 ### Sample Initialization
 ``` php
 <?php
