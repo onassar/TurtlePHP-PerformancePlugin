@@ -159,6 +159,13 @@
                             'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfWrites: ' .
                             ($numberOfWrites)
                         );
+
+                        // duration
+                        $duration = \MemcachedCache::getDuration();
+                        header(
+                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-duration: ' .
+                            ($duration)
+                        );
                         return $buffer;
                     });
                 }
