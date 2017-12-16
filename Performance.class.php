@@ -10,18 +10,18 @@
      * flushing, determines it's processing duration and memory usage, and
      * returns them through custom response-headers.
      * 
-     * @author Oliver Nassar <onassar@gmail.com>
-     * @notes  with PHP 5.4.x, $_SERVER['REQUEST_TIME'] can be used rather than
-     *         the <START> constant, as it'll be set as a float including
-     *         microtime
+     * @author  Oliver Nassar <onassar@gmail.com>
+     * @note    with PHP 5.4.x, $_SERVER['REQUEST_TIME'] can be used rather than
+     *          the <START> constant, as it'll be set as a float including
+     *          microtime
      */
     class Performance
     {
         /**
          * _hash
          * 
-         * @var    array
-         * @access protected
+         * @var     array
+         * @access  protected
          */
         protected $_hash;
 
@@ -31,14 +31,14 @@
          * Initializes the performance plugin by registering analytical callback
          * methods on the request buffer.
          * 
-         * @notes  The request callbacks registered here subsequently register
-         *         another request callback to ensure that they are the last
-         *         ones run. This does not cause an issue, as the callbacks are
-         *         retrieved and run by reference, rather than through returned
-         *         Closure objects.
-         * @access public
-         * @param  Request $request
-         * @return void
+         * @note    The request callbacks registered here subsequently register
+         *          another request callback to ensure that they are the last
+         *          ones run. This does not cause an issue, as the callbacks are
+         *          retrieved and run by reference, rather than through returned
+         *          Closure objects.
+         * @access  public
+         * @param   Request $request
+         * @return  void
          */
         public function __construct(\Turtle\Request $request)
         {
@@ -64,15 +64,15 @@
         /**
          * _addAPCCacheCallback
          * 
-         * @access protected
-         * @param  Request $request
-         * @return void
+         * @access  protected
+         * @param   Request $request
+         * @return  void
          */
         protected function _addAPCCacheCallback(\Turtle\Request $request)
         {
             $self = $this;
             $request->addCallback(function($buffer) use ($request, $self) {
-                if (class_exists('APCCache')) {
+                if (class_exists('APCCache') === true) {
                     $request->addCallback(function($buffer) use($self) {
 
                         // misses
@@ -105,9 +105,9 @@
         /**
          * _addDurationCallback
          * 
-         * @access protected
-         * @param  Request $request
-         * @return void
+         * @access  protected
+         * @param   Request $request
+         * @return  void
          */
         protected function _addDurationCallback(\Turtle\Request $request)
         {
@@ -128,15 +128,15 @@
         /**
          * _addMemcachedCacheCallback
          * 
-         * @access protected
-         * @param  Request $request
-         * @return void
+         * @access  protected
+         * @param   Request $request
+         * @return  void
          */
         protected function _addMemcachedCacheCallback(\Turtle\Request $request)
         {
             $self = $this;
             $request->addCallback(function($buffer) use ($request, $self) {
-                if (class_exists('MemcachedCache')) {
+                if (class_exists('MemcachedCache') === true) {
                     $request->addCallback(function($buffer) use($self) {
 
                         // misses
@@ -176,9 +176,9 @@
         /**
          * _addMemoryCallback
          * 
-         * @access protected
-         * @param  Request $request
-         * @return void
+         * @access  protected
+         * @param   Request $request
+         * @return  void
          */
         protected function _addMemoryCallback(\Turtle\Request $request)
         {
@@ -200,15 +200,15 @@
         /**
          * _addMySQLConnectionCallback
          * 
-         * @access protected
-         * @param  Request $request
-         * @return void
+         * @access  protected
+         * @param   Request $request
+         * @return  void
          */
         protected function _addMySQLConnectionCallback(\Turtle\Request $request)
         {
             $self = $this;
             $request->addCallback(function($buffer) use ($request, $self) {
-                if (class_exists('MySQLConnection')) {
+                if (class_exists('MySQLConnection') === true) {
                     $request->addCallback(function($buffer) use($self) {
 
                         // select queries
@@ -248,15 +248,15 @@
         /**
          * _addRequestCacheCallback
          * 
-         * @access protected
-         * @param  Request $request
-         * @return void
+         * @access  protected
+         * @param   Request $request
+         * @return  void
          */
         protected function _addRequestCacheCallback(\Turtle\Request $request)
         {
             $self = $this;
             $request->addCallback(function($buffer) use ($request, $self) {
-                if (class_exists('RequestCache')) {
+                if (class_exists('RequestCache') === true) {
                     $request->addCallback(function($buffer) use($self) {
 
                         // misses
@@ -289,9 +289,9 @@
         /**
          * _addRequestsCallback
          * 
-         * @access protected
-         * @param  Request $request
-         * @return void
+         * @access  protected
+         * @param   Request $request
+         * @return  void
          */
         protected function _addRequestsCallback(\Turtle\Request $request)
         {
@@ -312,8 +312,8 @@
         /**
          * getHash
          * 
-         * @access public
-         * @return String
+         * @access  public
+         * @return  string
          */
         public function getHash()
         {
@@ -323,9 +323,9 @@
         /**
          * setPathHeader
          * 
-         * @access public
-         * @param  Request $request
-         * @return void
+         * @access  public
+         * @param   Request $request
+         * @return  void
          */
         public function setPathHeader(\Turtle\Request $request)
         {
