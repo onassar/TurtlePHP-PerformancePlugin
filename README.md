@@ -18,8 +18,8 @@ subrequests.
      * Performance
      */
     require_once APP . '/plugins/TurtlePHP-PerformancePlugin/Performance.class.php';
-    $request = \Turtle\Application::getRequest();
-    (new \Plugin\Performance($request));
+    $request = Turtle\Application::getRequest();
+    new Plugin\Performance($request);
 
 ```
 
