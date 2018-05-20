@@ -71,32 +71,29 @@
         protected function _addAPCCacheCallback(\Turtle\Request $request)
         {
             $self = $this;
-            $request->addCallback(function($buffer) use ($request, $self) {
+            $request->addCallback(function($buffer) use ($self) {
                 if (class_exists('APCCache') === true) {
-                    $request->addCallback(function($buffer) use($self) {
 
-                        // misses
-                        $numberOfMisses = \APCCache::getMisses();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfMisses: ' .
-                            ($numberOfMisses)
-                        );
+                    // misses
+                    $numberOfMisses = \APCCache::getMisses();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfMisses: ' .
+                        ($numberOfMisses)
+                    );
 
-                        // reads
-                        $numberOfReads = \APCCache::getReads();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfReads: ' .
-                            ($numberOfReads)
-                        );
+                    // reads
+                    $numberOfReads = \APCCache::getReads();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfReads: ' .
+                        ($numberOfReads)
+                    );
 
-                        // writes
-                        $numberOfWrites = \APCCache::getWrites();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfWrites: ' .
-                            ($numberOfWrites)
-                        );
-                        return $buffer;
-                    });
+                    // writes
+                    $numberOfWrites = \APCCache::getWrites();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-APCCache-numberOfWrites: ' .
+                        ($numberOfWrites)
+                    );
                 }
                 return $buffer;
             });
@@ -112,15 +109,12 @@
         protected function _addDurationCallback(\Turtle\Request $request)
         {
             $self = $this;
-            $request->addCallback(function($buffer) use ($request, $self) {
-                $request->addCallback(function($buffer) use($self) {
-                    $benchmark = round(microtime(true) - START, 4);
-                    header(
-                        'TurtlePHP-' . ($self->getHash()) . '-Duration: ' .
-                        ($benchmark)
-                    );
-                    return $buffer;
-                });
+            $request->addCallback(function($buffer) use ($self) {
+                $benchmark = round(microtime(true) - START, 4);
+                header(
+                    'TurtlePHP-' . ($self->getHash()) . '-Duration: ' .
+                    ($benchmark)
+                );
                 return $buffer;
             });
         }
@@ -135,39 +129,36 @@
         protected function _addMemcachedCacheCallback(\Turtle\Request $request)
         {
             $self = $this;
-            $request->addCallback(function($buffer) use ($request, $self) {
+            $request->addCallback(function($buffer) use ($self) {
                 if (class_exists('MemcachedCache') === true) {
-                    $request->addCallback(function($buffer) use($self) {
 
-                        // misses
-                        $numberOfMisses = \MemcachedCache::getMisses();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfMisses: ' .
-                            ($numberOfMisses)
-                        );
+                    // misses
+                    $numberOfMisses = \MemcachedCache::getMisses();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfMisses: ' .
+                        ($numberOfMisses)
+                    );
 
-                        // reads
-                        $numberOfReads = \MemcachedCache::getReads();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfReads: ' .
-                            ($numberOfReads)
-                        );
+                    // reads
+                    $numberOfReads = \MemcachedCache::getReads();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfReads: ' .
+                        ($numberOfReads)
+                    );
 
-                        // writes
-                        $numberOfWrites = \MemcachedCache::getWrites();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfWrites: ' .
-                            ($numberOfWrites)
-                        );
+                    // writes
+                    $numberOfWrites = \MemcachedCache::getWrites();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-numberOfWrites: ' .
+                        ($numberOfWrites)
+                    );
 
-                        // duration
-                        $duration = \MemcachedCache::getDuration();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-duration: ' .
-                            ($duration)
-                        );
-                        return $buffer;
-                    });
+                    // duration
+                    $duration = \MemcachedCache::getDuration();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MemcachedCache-duration: ' .
+                        ($duration)
+                    );
                 }
                 return $buffer;
             });
@@ -183,16 +174,13 @@
         protected function _addMemoryCallback(\Turtle\Request $request)
         {
             $self = $this;
-            $request->addCallback(function($buffer) use ($request, $self) {
-                $request->addCallback(function($buffer) use($self) {
-                    $memory = (memory_get_peak_usage(true));
-                    $memory = number_format(round($memory / 1024)) . 'kb';
-                    header(
-                        'TurtlePHP-'. ($self->getHash()) . '-Memory: ' .
-                        ($memory)
-                    );
-                    return $buffer;
-                });
+            $request->addCallback(function($buffer) use ($self) {
+                $memory = (memory_get_peak_usage(true));
+                $memory = number_format(round($memory / 1024)) . 'kb';
+                header(
+                    'TurtlePHP-'. ($self->getHash()) . '-Memory: ' .
+                    ($memory)
+                );
                 return $buffer;
             });
         }
@@ -207,39 +195,36 @@
         protected function _addMySQLConnectionCallback(\Turtle\Request $request)
         {
             $self = $this;
-            $request->addCallback(function($buffer) use ($request, $self) {
+            $request->addCallback(function($buffer) use ($self) {
                 if (class_exists('MySQLConnection') === true) {
-                    $request->addCallback(function($buffer) use($self) {
 
-                        // select queries
-                        $numberOfSelectQueries = \MySQLConnection::getNumberOfSelectQueries();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfSelectQueries: ' .
-                            ($numberOfSelectQueries)
-                        );
+                    // select queries
+                    $numberOfSelectQueries = \MySQLConnection::getNumberOfSelectQueries();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfSelectQueries: ' .
+                        ($numberOfSelectQueries)
+                    );
 
-                        // insert queries
-                        $numberOfInsertQueries = \MySQLConnection::getNumberOfInsertQueries();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfInsertQueries: ' .
-                            ($numberOfInsertQueries)
-                        );
+                    // insert queries
+                    $numberOfInsertQueries = \MySQLConnection::getNumberOfInsertQueries();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfInsertQueries: ' .
+                        ($numberOfInsertQueries)
+                    );
 
-                        // update queries
-                        $numberOfUpdateQueries = \MySQLConnection::getNumberOfUpdateQueries();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfUpdateQueries: ' .
-                            ($numberOfUpdateQueries)
-                        );
+                    // update queries
+                    $numberOfUpdateQueries = \MySQLConnection::getNumberOfUpdateQueries();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-NumberOfUpdateQueries: ' .
+                        ($numberOfUpdateQueries)
+                    );
 
-                        // cumulative query duration
-                        $cumulativeQueryDuration = \MySQLConnection::getCumulativeQueryDuration();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-CumulativeQueryDuration: ' .
-                            ($cumulativeQueryDuration)
-                        );
-                        return $buffer;
-                    });
+                    // cumulative query duration
+                    $cumulativeQueryDuration = \MySQLConnection::getCumulativeQueryDuration();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-MySQLConnection-CumulativeQueryDuration: ' .
+                        ($cumulativeQueryDuration)
+                    );
                 }
                 return $buffer;
             });
@@ -255,32 +240,29 @@
         protected function _addRequestCacheCallback(\Turtle\Request $request)
         {
             $self = $this;
-            $request->addCallback(function($buffer) use ($request, $self) {
+            $request->addCallback(function($buffer) use ($self) {
                 if (class_exists('RequestCache') === true) {
-                    $request->addCallback(function($buffer) use($self) {
 
-                        // misses
-                        $numberOfMisses = \RequestCache::getMisses();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfMisses: ' .
-                            ($numberOfMisses)
-                        );
+                    // misses
+                    $numberOfMisses = \RequestCache::getMisses();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfMisses: ' .
+                        ($numberOfMisses)
+                    );
 
-                        // reads
-                        $numberOfReads = \RequestCache::getReads();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfReads: ' .
-                            ($numberOfReads)
-                        );
+                    // reads
+                    $numberOfReads = \RequestCache::getReads();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfReads: ' .
+                        ($numberOfReads)
+                    );
 
-                        // writes
-                        $numberOfWrites = \RequestCache::getWrites();
-                        header(
-                            'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfWrites: ' .
-                            ($numberOfWrites)
-                        );
-                        return $buffer;
-                    });
+                    // writes
+                    $numberOfWrites = \RequestCache::getWrites();
+                    header(
+                        'TurtlePHP-'. ($self->getHash()) . '-RequestCache-numberOfWrites: ' .
+                        ($numberOfWrites)
+                    );
                 }
                 return $buffer;
             });
@@ -296,15 +278,12 @@
         protected function _addRequestsCallback(\Turtle\Request $request)
         {
             $self = $this;
-            $request->addCallback(function($buffer) use ($request, $self) {
-                $request->addCallback(function($buffer) use($self) {
-                    $numberOfRequests = count(\Turtle\Application::getRequests());
-                    header(
-                        'TurtlePHP-'. ($self->getHash()) . '-NumberOfRequests: ' .
-                        ($numberOfRequests)
-                    );
-                    return $buffer;
-                });
+            $request->addCallback(function($buffer) use ($self) {
+                $numberOfRequests = count(\Turtle\Application::getRequests());
+                header(
+                    'TurtlePHP-'. ($self->getHash()) . '-NumberOfRequests: ' .
+                    ($numberOfRequests)
+                );
                 return $buffer;
             });
         }
