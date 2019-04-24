@@ -20,8 +20,8 @@
         /**
          * _hash
          * 
-         * @var     array
          * @access  protected
+         * @var     array
          */
         protected $_hash;
 
