@@ -15,8 +15,8 @@ subrequests.
 require_once APP . '/plugins/TurtlePHP-BasePlugin/Base.class.php';
 require_once APP . '/plugins/TurtlePHP-PerformancePlugin/Performance.class.php';
 $path = APP . '/config/plugins/performance.inc.php';
-Plugin\Performance::setPerformancePath($path);
-Plugin\Performance::init();
+TurtlePHP\Plugin\Performance::setPerformancePath($path);
+TurtlePHP\Plugin\Performance::init();
 ```
 
 ### Sample Response Headers
