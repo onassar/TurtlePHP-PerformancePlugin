@@ -1,7 +1,7 @@
 <?php
 
     // namespace
-    namespace Plugin;
+    namespace TurtlePHP\Plugin;
 
     /**
      * Performance
@@ -31,7 +31,7 @@
          * 
          * @access  protected
          * @static
-         * @var     null|\Turtle\Request (default: null)
+         * @var     null|\TurtlePHP\Request (default: null)
          */
         protected static $_request = null;
 
@@ -45,17 +45,17 @@
         protected static $_initiated = false;
 
         /**
-         * _addApplicationHook
+         * _addApplicationShutdownHook
          * 
          * @access  protected
          * @static
          * @param   callable $callback
          * @return  void
          */
-        protected static function _addApplicationHook(callable $callback): void
+        protected static function _addApplicationShutdownHook(callable $callback): void
         {
-            $hookKey = 'flush';
-            \Turtle\Application::addHook($hookKey, $callback);
+            $hookKey = 'shutdown';
+            \TurtlePHP\Application::addHook($hookKey, $callback);
         }
 
         /**
@@ -67,7 +67,7 @@
          */
         protected static function _addDurationCallback(): void
         {
-            static::_addApplicationHook(function(?string $buffer): bool {
+            static::_addApplicationShutdownHook(function(?string $buffer): bool {
                 if (headers_sent() === true) {
                     return false;
                 }
@@ -87,7 +87,7 @@
          */
         protected static function _addMemcachedCacheCallback(): void
         {
-            static::_addApplicationHook(function(?string $buffer): bool {
+            static::_addApplicationShutdownHook(function(?string $buffer): bool {
                 if (headers_sent() === true) {
                     return false;
                 }
@@ -119,7 +119,7 @@
          */
         protected static function _addMemoryCallback(): void
         {
-            static::_addApplicationHook(function(?string $buffer): bool {
+            static::_addApplicationShutdownHook(function(?string $buffer): bool {
                 if (headers_sent() === true) {
                     return false;
                 }
@@ -139,7 +139,7 @@
          */
         protected static function _addMySQLConnectionCallback(): void
         {
-            static::_addApplicationHook(function(?string $buffer): bool {
+            static::_addApplicationShutdownHook(function(?string $buffer): bool {
                 if (headers_sent() === true) {
                     return false;
                 }
@@ -188,7 +188,7 @@
          */
         protected static function _addRequestCacheCallback(): void
         {
-            static::_addApplicationHook(function(?string $buffer): bool {
+            static::_addApplicationShutdownHook(function(?string $buffer): bool {
                 if (headers_sent() === true) {
                     return false;
                 }
@@ -217,7 +217,7 @@
          */
         protected static function _addRequestsCallback(): void
         {
-            static::_addApplicationHook(function(?string $buffer): bool {
+            static::_addApplicationShutdownHook(function(?string $buffer): bool {
                 if (headers_sent() === true) {
                     return false;
                 }
@@ -237,7 +237,7 @@
          */
         protected static function _addRouteHeader(): void
         {
-            static::_addApplicationHook(function(?string $buffer): bool {
+            static::_addApplicationShutdownHook(function(?string $buffer): bool {
                 if (headers_sent() === true) {
                     return false;
                 }
@@ -269,7 +269,7 @@
          */
         protected static function _getNumberOfRequest(): int
         {
-            $requests = \Turtle\Application::getRequests();
+            $requests = \TurtlePHP\Application::getRequests();
             $numberOfRequests = count($requests);
             return $numberOfRequests;
         }
@@ -317,7 +317,7 @@
          */
         protected static function _getRequestRoutePath(): ?string
         {
-            $request = \Turtle\Application::getRequest();
+            $request = \TurtlePHP\Application::getRequest();
             $requestRoutePath = $request->getRoutePath();
             return $requestRoutePath;
         }
@@ -350,4 +350,4 @@
     $info = pathinfo(__DIR__);
     $parent = ($info['dirname']) . '/' . ($info['basename']);
     $configPath = ($parent) . '/config.inc.php';
-    \Plugin\Database::setConfigPath($configPath);
+    \TurtlePHP\Plugin\Database::setConfigPath($configPath);

@@ -1,12 +1,6 @@
 <?php
 
     /**
-     * Namespace
-     * 
-     */
-    namespace Plugin\Performance;
-
-    /**
      * Plugin Config Data
      * 
      */
@@ -17,4 +11,4 @@
      * 
      */
     $key = 'TurtlePHP-PerformancePlugin';
-    \Plugin\Config::add($key, $pluginConfigData);
+    TurtlePHP\Plugin\Config::set($key, $pluginConfigData);
