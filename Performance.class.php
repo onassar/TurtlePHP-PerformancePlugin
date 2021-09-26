@@ -350,4 +350,4 @@
     $info = pathinfo(__DIR__);
     $parent = ($info['dirname']) . '/' . ($info['basename']);
     $configPath = ($parent) . '/config.inc.php';
-    \TurtlePHP\Plugin\Database::setConfigPath($configPath);
+    \TurtlePHP\Plugin\Performance::setConfigPath($configPath);
